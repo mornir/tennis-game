@@ -25,7 +25,9 @@
     let paddle1Y = 250
     let paddle2Y = 250
 
+    const PADDLE_THICKNESS = 10
     const PADDLE_HEIGHT = 100
+
 
     window.onload = function () {
 
@@ -48,7 +50,11 @@
       }
 
       if (ballX >= canvas.width) {
-        ballSpeedX = -ballSpeedX
+        if (ballY > paddle2Y && ballY < paddle2Y + PADDLE_HEIGHT) {
+          ballSpeedX = -ballSpeedX
+        } else {
+          ballReset()
+        }
       }
 
       if (ballY >= canvas.height || ballY <= 0) {
@@ -64,10 +70,11 @@
       colorRect(0, 0, canvas.width, canvas.height, 'black')
 
       // Player 1
-      colorRect(0, paddle1Y, 20, PADDLE_HEIGHT, 'white')
+      colorRect(0, paddle1Y, PADDLE_THICKNESS, PADDLE_HEIGHT, 'white')
 
       // Player 2
-      colorRect(canvas.width - 20, paddle1Y, 20, PADDLE_HEIGHT, 'white')
+      colorRect(canvas.width - PADDLE_THICKNESS, paddle2Y, PADDLE_THICKNESS, PADDLE_HEIGHT, 'white')
+
       colorCircle(ballX, ballY, 10, 'white')
     }
 
@@ -83,15 +90,22 @@
       canvasContext.fill()
     }
 
-    function movePaddle(e) {
+    function moveLeftPaddle(e) {
       const key = e.keyCode
-
       if (key == 87) {
         paddle1Y = paddle1Y - 10
       } else if (key == 83) {
         paddle1Y = paddle1Y + 10
       }
+    }
 
+    function moveRightPaddle(e) {
+      const key = e.keyCode
+      if (key == 38) {
+        paddle2Y = paddle2Y - 10
+      } else if (key == 40) {
+        paddle2Y = paddle2Y + 10
+      }
     }
 
     function ballReset() {
@@ -99,7 +113,8 @@
       ballX = canvas.width / 2
       ballY = canvas.height / 2
     }
-    document.addEventListener('keydown', movePaddle)
+    document.addEventListener('keydown', moveLeftPaddle)
+    document.addEventListener('keydown', moveRightPaddle)
 
   </script>
 </body>
